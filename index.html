@@ -37,6 +37,32 @@
   <ul>
     <li><a href="https://guillermochantre.streamlit.app" target="_blank">🧠 Lolium spp. emergence model for 2025</a></li>
     <img src="monitoreo emergencia.jpg" alt="monitoreo emergencia" width="300">  
+
+      <p> User Guide - Emergency Forecast 2025
+        1. Upload your weather data file
+        Required format: Excel (.xlsx)
+        The file must contain the following columns with these exact names:
+        - Julian_days: Day of the year (1 to 365)
+        - TMAX: Maximum temperature (°C)
+        - TMIN: Minimum temperature (°C)
+        - Prec: Precipitation (mm)
+        Use the file upload button in the app to select your file.
+       2. View the results
+       The application generates a daily bar chart with the EMERREL(0-1) value between Julian days 32 and 210.
+       The colors indicate the risk level:
+       - Green: Low
+       - Orange: Medium
+       - Red: High
+        3. View and download your results
+        The results table shows:
+        - Julian day
+        - EMERREL(0-1)
+        - Risk level (Low / Medium / High)
+        - Calendar date
+        You can download the results as a CSV file. </p>
+
+
+    
   </ul>
 </body>
 </html>
