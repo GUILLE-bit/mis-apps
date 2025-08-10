@@ -1,131 +1,317 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PREDWEEM · Predictive Weed Emergence Models</title>
+  <meta name="description" content="Portal for daily weed emergence risk and cumulative emergence models (ANN) developed by UNS & INTA." />
+  <meta property="og:title" content="PREDWEEM – Predictive Weed Emergence Models" />
+  <meta property="og:description" content="Decision tools for sustainable management in the Austral Pampas. Upload your weather data and get 2025 forecasts." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="austral.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KJL1YNPYYS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-KJL1YNPYYS');
-</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-KJL1YNPYYS"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-KJL1YNPYYS');
-</script>  
-  <meta charset="UTF-8">
-  <title>PREDICTIVE WEED EMERGENCE MODELS</title>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-KJL1YNPYYS');
+  </script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background: #f7f7f7;
-      color: #333;
+    :root{
+      --bg:#f8f9f4; --card:#ffffff; --text:#243024; --muted:#5b6b5b;
+      --primary:#2e5e2d; --accent:#4CAF50; --border:#e0e6db; --link:#1e6fe0;
     }
-    h1 {
-      color: #0066cc;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      margin: 15px 0;
-      font-size: 18px;
-    }
-    a {
-      text-decoration: none;
-      color: #0066cc;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,"Segoe UI",sans-serif;line-height:1.55}
+    img{max-width:100%;height:auto;border-radius:12px}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#2e5e2d,#6fbf73)}
+    h1{font-size:28px;color:var(--primary);margin:0}
+    .subtitle{margin:4px 0 0 0;color:var(--muted)}
+    .lang{display:flex;gap:8px;align-items:center}
+    .lang button{border:1px solid var(--border);background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer}
+    .lang button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;margin:10px 0 22px}
+    .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+    .btn{display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:600}
+    .btn.secondary{background:#2e5e2d}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .section{margin:18px 0}
+    .section h2{color:var(--primary);margin:0 0 8px}
+    .muted{color:var(--muted)}
+    .model-card{display:flex;flex-direction:column;gap:10px}
+    .model-card img{aspect-ratio:16/9;object-fit:cover}
+    .model-card .title{font-weight:700}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .step{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px}
+    .step h3{margin:0 0 6px;color:var(--primary);font-size:16px}
+    .kbd{font-family:ui-monospace, Menlo, monospace;background:#eef1ea;border:1px solid var(--border);border-radius:8px;padding:0 6px}
+    .legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .dot{width:10px;height:10px;border-radius:50%}
+    .dot.green{background:#2ecc71}.dot.orange{background:#f0932b}.dot.red{background:#d33535}
+    .tbl{width:100%;border-collapse:separate;border-spacing:0 8px}
+    .tbl th{font-size:13px;color:var(--muted);text-align:left}
+    footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted)}
+    @media (max-width:960px){.grid{grid-template-columns:1fr}.grid-2,.grid-4{grid-template-columns:1fr}.hero{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <h1>📊 PREDWEEM: PREDICTIVE WEED EMERGENCE MODELS </h1> 
-  <p>This portal contains weed emergence models developed collaboratively by the Department of Agronomy of Universidad Nacional del Sur and INTA.</p>
-  <p>The purpose is to generate decision-making tools for the sustainable management of agricultural systems of the Austral Pampas.</p>
-    <img src="austral.png" alt="austral" width="350"> 
-  <ul>
-    
-     <h1>System Overview</h1>
-     <p>This system is an application developed in Python using Streamlit, designed to predict the daily weed emergence risk level and the cumulative emergence % during the year 2025.</p>
-     <p>The prediction is made using an artificial neural network (ANN) model trained with historical meteorological data.</p>
-     <li><a>In the following link, you can access the weed emergence models and upload your site-specific meteorological data:</a></li>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1 data-i18n="title">📊 PREDWEEM – Predictive Weed Emergence Models</h1>
+          <p class="subtitle" data-i18n="subtitle">Decision tools for sustainable management in the Austral Pampas</p>
+        </div>
+      </div>
+      <div class="lang" aria-label="Language selector">
+        <button id="btn-es">ES</button>
+        <button id="btn-en" class="active">EN</button>
+      </div>
+    </header>
 
-      <li><a href="https://guillermochantre.streamlit.app" target="_blank">🧠 Lolium spp. emergence model for 2025</a></li>
-        
-     <img src="monitoreo emergencia.jpg" alt="monitoreo emergencia" width="350">  <img src="lolium.jpeg" alt="lolium" width="200"> <img src="lolium2.png" alt="lolium" width="380">
+    <section class="hero">
+      <div class="card">
+        <p data-i18n="hero_text">
+          This portal contains weed emergence models developed collaboratively by the Department of Agronomy (Universidad Nacional del Sur) and INTA.
+          Upload your site-specific weather data and get daily risk levels and cumulative emergence (%) for <strong>2025</strong>.
+        </p>
+        <div class="cta">
+          <a class="btn" href="#models" data-i18n="cta_models">Explore models</a>
+          <a class="btn secondary" href="#guide" data-i18n="cta_guide">User guide</a>
+          <a class="btn" href="plantilla_predweem.xlsx" download data-i18n="cta_template">Download Excel template</a>
+        </div>
+      </div>
+      <figure>
+        <img src="austral.png" alt="Austral Pampas map" />
+      </figure>
+    </section>
 
-     <li><a href="https://hirshin-6vnwvy2xobhg6nt79xyeai.streamlit.app" target="_blank">🧠 Hirshfeldia incana emergence model 2025 (BORDENAVE AREA)</a></li> 
-  
-     <img src="hirsin.png" alt="hirsin" width="400"> <img src="hir.png" alt="hir" width="350"> 
+    <section id="models" class="section">
+      <h2 data-i18n="models_h2">Models</h2>
+      <div class="grid">
+        <article class="card model-card">
+          <img src="lolium.jpeg" alt="Lolium spp." />
+          <div class="title" data-i18n="model1_title">🧠 Lolium spp. emergence model – 2025</div>
+          <a class="btn" target="_blank" href="https://guillermochantre.streamlit.app" data-i18n="open_app">Open app</a>
+        </article>
+        <article class="card model-card">
+          <img src="hirsin.png" alt="Hirshfeldia incana (Bordenave)" />
+          <div class="title" data-i18n="model2_title">🧠 Hirshfeldia incana – 2025 (Bordenave area)</div>
+          <a class="btn" target="_blank" href="https://hirshin-6vnwvy2xobhg6nt79xyeai.streamlit.app" data-i18n="open_app">Open app</a>
+        </article>
+        <article class="card model-card">
+          <img src="lecheron.png" alt="Euphorbia davidii" />
+          <div class="title" data-i18n="model3_title">🧠 Euphorbia davidii emergence model – 2025</div>
+          <a class="btn" target="_blank" href="https://nri3weubyzx8gc3dba6hxn.streamlit.app" data-i18n="open_app">Open app</a>
+        </article>
+      </div>
+    </section>
 
-    <li><a href="https://nri3weubyzx8gc3dba6hxn.streamlit.app" target="_blank">🧠 Euphorbia davidii emergence model for 2025 </a></li>
-    
-     <img src="EUPHO.jpg" alt="EUPHO" width="300"> <img src="lecheron.png" alt="hir" width="420"> 
-    
-      <li><a>📊 User Guide - Field Emergence Forecast 2025</a></li>
-      <li><a> 1. Upload your weather data file</a></li>
-       <p> Required format: Excel (.xlsx)</p>
-        The file must contain the following columns with these exact names:</p>   
-        - Julian_days: Day of the year (1 to 365)</p>
-        - TMAX: Daily Maximum Air Temperature (°C)</p>
-        - TMIN: Daily Minimum Air Temperature (°C)</p>
-        - Prec: Daily Precipitation (mm)</p>
-        Use the file upload button in the app to select your file.</p>
-      <li><a>2. View the results</a></li>
-       The application generates a bar chart with the Daily Relative Emergence. </p>    <img src="pipa.png" alt="pipa" width="800">
-       
-    <p> The colours indicate the Daily Emergence Level:</p>
-       - Green: Low </p>
-       - Orange: Medium </p>
-       - Red: High </p>
-    
-    <p> Cumulative Emergence (%) with different levels</p> <img src="ac.png" alt="ac" width="800">
-     
-      <li><a> 3. View and download your results </a></li>
-        The results table shows:</p>
-        - Julian day </p> 
-        - Calendar date </p>
-        - Daily Emergence Level (Low / Medium / High)</p>
-        - Cumulative Emergence (%) </p>
-       
-        You can download the results as a CSV file.</p>
-    
-<li><a>📊 DEVELOPER</a></li>
- <img src="FOTO.jpg" alt="monitoreo emergencia" width="300"> 
- <p>Ing. Agr. (Dr.) Guillermo R. Chantre</p>
-   Dpto. de Agronomía UNS</p>
-   San Andrés 800 - Bahía Blanca (8000)</p>
-   Buenos Aires - Argentina </p>
-  <p>For further enquiries or collaborations, send an email to guillermo.chantre@uns.edu.ar</p>
-    
-<li><a>📊 CONTRIBUTORS</a></li>
- <img src="Luis.JPG" alt="Luis" width="300"> 
-<p> Ing. Agr. (Dr.) Luis M. Carretto</p>
-      EEA INTA Bordenave</p>
-      Bordenave, Púan (Bs. As.) </p>
-    
-<img src="ramon.jpeg" alt="ramon" width="300"> 
-    <p> Ing. Agr. (MSc.) Ramon Gigon</p>
-      Director RG malezas </p>
-      Tres Arroyos, Bs. As. </p>
+    <section id="overview" class="section">
+      <h2 data-i18n="overview_h2">System overview</h2>
+      <div class="grid-2">
+        <div class="card">
+          <p data-i18n="overview_p1">
+            The system is a Python application built with Streamlit. It predicts <strong>daily weed emergence levels</strong>
+            and <strong>cumulative emergence percentages</strong> using an <abbr title="Artificial Neural Network">ANN</abbr>
+            trained on historical meteorological data.
+          </p>
+          <p class="muted" data-i18n="overview_p2">Universidad Nacional del Sur · INTA · CERZOS · Regional collaborators</p>
+        </div>
+        <figure>
+          <img src="monitoreo emergencia.jpg" alt="Field monitoring" />
+        </figure>
+      </div>
+    </section>
 
-<img src="mario.jpeg" alt="mario" width="300">   
-    <p> Ing. Agr. (MSc.) Mario R. Vigna</p>
-        Ex-Investigador INTA, CIC, CONICET</p>
-        Asesor privado </p>
-        Bordenave, Bs. As. </p>
+    <section id="guide" class="section">
+      <h2 data-i18n="guide_h2">User guide · Field Emergence Forecast 2025</h2>
+      <div class="steps">
+        <div class="step">
+          <h3 data-i18n="g1_h3">1️⃣ Upload your weather data</h3>
+          <p data-i18n="g1_p1">Required format: Excel (.xlsx) with exact column names:</p>
+          <p><span class="kbd">Julian_days</span> · <span class="kbd">TMAX</span> · <span class="kbd">TMIN</span> · <span class="kbd">Prec</span></p>
+          <p class="muted" data-i18n="g1_p2">Use the file upload button in the app.</p>
+        </div>
+        <div class="step">
+          <h3 data-i18n="g2_h3">2️⃣ View results</h3>
+          <p data-i18n="g2_p1">Daily Relative Emergence bar chart and cumulative emergence (%) over time.</p>
+          <div class="legend"><span class="dot green"></span><span data-i18n="legend_low">Low</span> <span class="dot orange"></span><span data-i18n="legend_med">Medium</span> <span class="dot red"></span><span data-i18n="legend_high">High</span></div>
+        </div>
+        <div class="step">
+          <h3 data-i18n="g3_h3">3️⃣ Download</h3>
+          <p data-i18n="g3_p1">Results include Julian day, calendar date, daily level and cumulative emergence (%). Export as CSV.</p>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <figure class="card"><img src="pipa.png" alt="Daily emergence chart" /></figure>
+        <figure class="card"><img src="ac.png" alt="Cumulative emergence chart" /></figure>
+      </div>
+    </section>
 
-<li><a>📊 COLLABORATING INSTITUTIONS </a></li>
-<img src="descarga.jpg" alt="descarga" width="200">  <img src="cerzos.jpg" alt="cerzos" width="200"> <img src="inta.png" alt="inta" width="200"> <img src="BCP_3-100.jpg" alt="cerzos" width="200">
+    <section id="faq" class="section">
+      <h2 data-i18n="faq_h2">FAQ</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3 data-i18n="faq_q1">What if my file has different column names?</h3>
+          <p data-i18n="faq_a1">Rename columns exactly to Julian_days, TMAX, TMIN, Prec. You can start from the downloadable template.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="faq_q2">What year are predictions valid for?</h3>
+          <p data-i18n="faq_a2">Models are calibrated for 2025 in this release. Future versions may include other years.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="faq_q3">Can I use data with missing days?</h3>
+          <p data-i18n="faq_a3">Yes, but filling gaps improves accuracy. Keep Julian_days continuous where possible.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="faq_q4">Where is my data stored?</h3>
+          <p data-i18n="faq_a4">Data is processed client-side by Streamlit Cloud; files aren’t persisted after your session ends.</p>
+        </div>
+      </div>
+    </section>
 
-    
-  </ul>
+    <section id="team" class="section">
+      <h2 data-i18n="team_h2">Developer & contributors</h2>
+      <div class="grid-4">
+        <figure class="card">
+          <img src="FOTO.jpg" alt="Guillermo R. Chantre" />
+          <figcaption><strong>Ing. Agr. (Dr.) Guillermo R. Chantre</strong><br/>Dept. of Agronomy, UNS · Bahía Blanca, AR<br/><a href="mailto:guillermo.chantre@uns.edu.ar">guillermo.chantre@uns.edu.ar</a></figcaption>
+        </figure>
+        <figure class="card">
+          <img src="Luis.JPG" alt="Luis M. Carretto" />
+          <figcaption><strong>Ing. Agr. (Dr.) Luis M. Carretto</strong><br/>EEA INTA Bordenave · Puan (Bs. As.)</figcaption>
+        </figure>
+        <figure class="card">
+          <img src="ramon.jpeg" alt="Ramón Gigon" />
+          <figcaption><strong>Ing. Agr. (MSc.) Ramón Gigon</strong><br/>Director RG malezas · Tres Arroyos</figcaption>
+        </figure>
+        <figure class="card">
+          <img src="mario.jpeg" alt="Mario R. Vigna" />
+          <figcaption><strong>Ing. Agr. (MSc.) Mario R. Vigna</strong><br/>Ex-INTA · CIC · CONICET · Private advisor</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="institutions" class="section">
+      <h2 data-i18n="inst_h2">Collaborating institutions</h2>
+      <div class="grid-4">
+        <figure class="card"><img src="descarga.jpg" alt="UNS" /></figure>
+        <figure class="card"><img src="cerzos.jpg" alt="CERZOS" /></figure>
+        <figure class="card"><img src="inta.png" alt="INTA" /></figure>
+        <figure class="card"><img src="BCP_3-100.jpg" alt="BCP" /></figure>
+      </div>
+    </section>
+
+    <footer>
+      <small data-i18n="footer">© 2025 Universidad Nacional del Sur & INTA · PREDWEEM. All rights reserved.</small>
+    </footer>
+  </div>
+
+  <script>
+    // Simple i18n: dictionary-based toggle
+    const dict = {
+      es: {
+        title: '📊 PREDWEEM – Modelos Predictivos de Emergencia de Malezas',
+        subtitle: 'Herramientas para la gestión sustentable en la Pampa Austral',
+        hero_text: 'Este portal reúne modelos de emergencia desarrollados por el Departamento de Agronomía (Universidad Nacional del Sur) y el INTA. Cargue sus datos meteorológicos del sitio y obtenga niveles diarios de riesgo y emergencia acumulada (%) para <strong>2025</strong>.',
+        cta_models: 'Ver modelos',
+        cta_guide: 'Guía de uso',
+        cta_template: 'Descargar plantilla Excel',
+        models_h2: 'Modelos',
+        model1_title: '🧠 Modelo de emergencia de Lolium spp. – 2025',
+        model2_title: '🧠 Hirshfeldia incana – 2025 (área Bordenave)',
+        model3_title: '🧠 Modelo de emergencia de Euphorbia davidii – 2025',
+        open_app: 'Abrir app',
+        overview_h2: 'Descripción del sistema',
+        overview_p1: 'El sistema es una aplicación en Python con Streamlit. Predice <strong>niveles diarios de emergencia</strong> y <strong>porcentaje acumulado (EMEAC)</strong> mediante una <abbr title="Red Neuronal Artificial">RNA</abbr> entrenada con datos meteorológicos históricos.',
+        overview_p2: 'Universidad Nacional del Sur · INTA · CERZOS · Colaboradores regionales',
+        guide_h2: 'Guía de uso · Pronóstico de emergencia 2025',
+        g1_h3: '1️⃣ Cargue sus datos meteorológicos',
+        g1_p1: 'Formato requerido: Excel (.xlsx) con nombres de columna exactos:',
+        g1_p2: 'Use el botón de carga dentro de la app.',
+        g2_h3: '2️⃣ Visualice los resultados',
+        g2_p1: 'Gráfico de barras de Emergencia Relativa diaria y Emergencia Acumulada (%) en el tiempo.',
+        legend_low: 'Bajo', legend_med: 'Medio', legend_high: 'Alto',
+        g3_h3: '3️⃣ Descargue',
+        g3_p1: 'Resultados incluyen día juliano, fecha calendario, nivel diario y emergencia acumulada (%). Exporta a CSV.',
+        faq_h2: 'Preguntas frecuentes',
+        faq_q1: '¿Qué pasa si mi archivo tiene otros nombres de columnas?',
+        faq_a1: 'Renómbrelas exactamente a Julian_days, TMAX, TMIN, Prec. Puede iniciar desde la plantilla descargable.',
+        faq_q2: '¿Para qué año son válidas las predicciones?',
+        faq_a2: 'En esta versión están calibradas para 2025. Versiones futuras pueden incluir otros años.',
+        faq_q3: '¿Puedo usar datos con días faltantes?',
+        faq_a3: 'Sí, pero completar huecos mejora la precisión. Mantenga Julian_days continuo cuando sea posible.',
+        faq_q4: '¿Dónde se almacenan mis datos?',
+        faq_a4: 'Los datos se procesan en Streamlit Cloud y no se persisten luego de su sesión.',
+        team_h2: 'Desarrollador y colaboradores',
+        inst_h2: 'Instituciones colaboradoras',
+        footer: '© 2025 Universidad Nacional del Sur & INTA · PREDWEEM. Todos los derechos reservados.'
+      },
+      en: {
+        title: '📊 PREDWEEM – Predictive Weed Emergence Models',
+        subtitle: 'Decision tools for sustainable management in the Austral Pampas',
+        hero_text: 'This portal contains weed emergence models developed collaboratively by the Department of Agronomy (Universidad Nacional del Sur) and INTA. Upload your site-specific weather data and get daily risk levels and cumulative emergence (%) for <strong>2025</strong>.',
+        cta_models: 'Explore models',
+        cta_guide: 'User guide',
+        cta_template: 'Download Excel template',
+        models_h2: 'Models',
+        model1_title: '🧠 Lolium spp. emergence model – 2025',
+        model2_title: '🧠 Hirshfeldia incana – 2025 (Bordenave area)',
+        model3_title: '🧠 Euphorbia davidii emergence model – 2025',
+        open_app: 'Open app',
+        overview_h2: 'System overview',
+        overview_p1: 'The system is a Python application built with Streamlit. It predicts <strong>daily weed emergence levels</strong> and <strong>cumulative emergence percentages</strong> using an <abbr title="Artificial Neural Network">ANN</abbr> trained on historical meteorological data.',
+        overview_p2: 'Universidad Nacional del Sur · INTA · CERZOS · Regional collaborators',
+        guide_h2: 'User guide · Field Emergence Forecast 2025',
+        g1_h3: '1️⃣ Upload your weather data',
+        g1_p1: 'Required format: Excel (.xlsx) with exact column names:',
+        g1_p2: 'Use the file upload button in the app.',
+        g2_h3: '2️⃣ View results',
+        g2_p1: 'Daily Relative Emergence bar chart and cumulative emergence (%) over time.',
+        legend_low: 'Low', legend_med: 'Medium', legend_high: 'High',
+        g3_h3: '3️⃣ Download',
+        g3_p1: 'Results include Julian day, calendar date, daily level and cumulative emergence (%). Export as CSV.',
+        faq_h2: 'FAQ',
+        faq_q1: 'What if my file has different column names?',
+        faq_a1: 'Rename columns exactly to Julian_days, TMAX, TMIN, Prec. You can start from the downloadable template.',
+        faq_q2: 'What year are predictions valid for?',
+        faq_a2: 'Models are calibrated for 2025 in this release. Future versions may include other years.',
+        faq_q3: 'Can I use data with missing days?',
+        faq_a3: 'Yes, but filling gaps improves accuracy. Keep Julian_days continuous where possible.',
+        faq_q4: 'Where is my data stored?',
+        faq_a4: 'Data is processed client-side by Streamlit Cloud; files aren’t persisted after your session ends.',
+        team_h2: 'Developer & contributors',
+        inst_h2: 'Collaborating institutions',
+        footer: '© 2025 Universidad Nacional del Sur & INTA · PREDWEEM. All rights reserved.'
+      }
+    };
+
+    const $ = (sel) => document.querySelectorAll(sel);
+    function setLang(lang){
+      const d = dict[lang];
+      $('[data-i18n]').forEach(el=>{ const k = el.getAttribute('data-i18n'); if(d[k]) el.innerHTML = d[k]; });
+      document.documentElement.lang = lang;
+      document.getElementById('btn-es').classList.toggle('active', lang==='es');
+      document.getElementById('btn-en').classList.toggle('active', lang==='en');
+    }
+
+    document.getElementById('btn-es').addEventListener('click', ()=> setLang('es'));
+    document.getElementById('btn-en').addEventListener('click', ()=> setLang('en'));
+
+    const pref = (navigator.language||'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+    setLang(pref);
+  </script>
 </body>
 </html>
