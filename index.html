@@ -39,7 +39,7 @@
     .lang button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;margin:10px 0 22px}
     .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .btn{display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:600}
+    .btn{display:inline-block;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer}
     .btn.secondary{background:#2e5e2d}
     .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -214,6 +214,51 @@
       </div>
     </section>
 
+    <!-- Contact section -->
+    <section id="contact" class="section">
+      <h2 data-i18n="contact_h2">Consultas o comentarios</h2>
+      <div class="card">
+        <form id="contact-form" action="https://formspree.io/f/mkgzyvbg" method="POST" enctype="multipart/form-data">
+          <!-- Honeypot anti-spam -->
+          <input type="text" name="_gotcha" style="display:none">
+          <!-- Asunto dinámico -->
+          <input type="hidden" name="_subject" id="subject" value="Consulta desde PREDWEEM">
+
+          <label for="topic" data-i18n="contact_topic">Motivo:</label><br>
+          <select id="topic" name="topic" required
+            style="width:100%;padding:8px;margin:6px 0;border:1px solid var(--border);border-radius:8px;">
+            <option value="" selected disabled data-i18n="contact_topic_placeholder">Seleccioná un motivo…</option>
+            <option value="Soporte" data-i18n="contact_topic_support">Soporte</option>
+            <option value="Sugerencia" data-i18n="contact_topic_suggestion">Sugerencia</option>
+            <option value="Error/Bug" data-i18n="contact_topic_bug">Error/Bug</option>
+            <option value="Colaboración" data-i18n="contact_topic_collab">Colaboración</option>
+            <option value="Otro" data-i18n="contact_topic_other">Otro</option>
+          </select><br>
+
+          <label for="name" data-i18n="contact_name">Nombre:</label><br>
+          <input type="text" id="name" name="name" required
+            style="width:100%;padding:8px;margin:6px 0;border:1px solid var(--border);border-radius:8px;"><br>
+
+          <label for="email" data-i18n="contact_email">Correo electrónico:</label><br>
+          <input type="email" id="email" name="_replyto" required
+            style="width:100%;padding:8px;margin:6px 0;border:1px solid var(--border);border-radius:8px;"><br>
+
+          <label for="message" data-i18n="contact_message">Mensaje:</label><br>
+          <textarea id="message" name="message" rows="4" required
+            style="width:100%;padding:8px;margin:6px 0;border:1px solid var(--border);border-radius:8px;"></textarea><br>
+
+          <label for="file" data-i18n="contact_file">Adjuntar archivo (opcional):</label><br>
+          <input type="file" id="file" name="file"
+            style="width:100%;padding:8px;margin:6px 0;border:1px solid var(--border);border-radius:8px;"
+            accept=".png,.jpg,.jpeg,.pdf,.xlsx,.csv,.txt"><br>
+          <small class="muted" data-i18n="contact_file_hint">Formatos: PNG, JPG, PDF, XLSX, CSV, TXT. Máx. 5 MB.</small><br><br>
+
+          <button type="submit" class="btn" data-i18n="contact_send">Enviar</button>
+          <p id="form-status" class="muted" aria-live="polite" style="margin-top:8px;"></p>
+        </form>
+      </div>
+    </section>
+
     <footer>
       <small data-i18n="footer">© 2025 Guillermo R. Chantre · PREDWEEM. All rights reserved.</small>
     </footer>
@@ -257,7 +302,28 @@
         faq_a4: 'Los datos se procesan en Streamlit Cloud y no se persisten luego de su sesión.',
         team_h2: 'Desarrollador y colaboradores',
         inst_h2: 'Instituciones colaboradoras',
-        footer: '© 2025 Guillermo R. Chantre · PREDWEEM. Todos los derechos reservados.'
+        footer: '© 2025 Guillermo R. Chantre · PREDWEEM. Todos los derechos reservados.',
+
+        // Contacto
+        contact_h2: 'Consultas o comentarios',
+        contact_name: 'Nombre:',
+        contact_email: 'Correo electrónico:',
+        contact_message: 'Mensaje:',
+        contact_send: 'Enviar',
+        contact_sending: 'Enviando…',
+        contact_success: '¡Gracias! Tu mensaje fue enviado.',
+        contact_error: 'Ocurrió un error. Por favor, probá de nuevo más tarde.',
+        contact_topic: 'Motivo:',
+        contact_topic_placeholder: 'Seleccioná un motivo…',
+        contact_topic_support: 'Soporte',
+        contact_topic_suggestion: 'Sugerencia',
+        contact_topic_bug: 'Error/Bug',
+        contact_topic_collab: 'Colaboración',
+        contact_topic_other: 'Otro',
+        contact_file: 'Adjuntar archivo (opcional):',
+        contact_file_hint: 'Formatos: PNG, JPG, PDF, XLSX, CSV, TXT. Máx. 5 MB.',
+        contact_file_type: 'Tipo de archivo no permitido.',
+        contact_file_size: 'El archivo supera el tamaño máximo permitido (5 MB).'
       },
       en: {
         title: '📊 PREDWEEM – Predictive Weed Emergence Models',
@@ -294,7 +360,28 @@
         faq_a4: 'Data is processed client-side by Streamlit Cloud; files aren’t persisted after your session ends.',
         team_h2: 'Developer & contributors',
         inst_h2: 'Collaborating institutions',
-        footer: '© 2025 GUILLERMO R. CHANTRE · PREDWEEM. All rights reserved.'
+        footer: '© 2025 Guillermo R. Chantre · PREDWEEM. All rights reserved.',
+
+        // Contact
+        contact_h2: 'Inquiries or comments',
+        contact_name: 'Name:',
+        contact_email: 'Email:',
+        contact_message: 'Message:',
+        contact_send: 'Send',
+        contact_sending: 'Sending…',
+        contact_success: 'Thanks! Your message has been sent.',
+        contact_error: 'Something went wrong. Please try again later.',
+        contact_topic: 'Topic:',
+        contact_topic_placeholder: 'Select a topic…',
+        contact_topic_support: 'Support',
+        contact_topic_suggestion: 'Suggestion',
+        contact_topic_bug: 'Bug',
+        contact_topic_collab: 'Collaboration',
+        contact_topic_other: 'Other',
+        contact_file: 'Attach a file (optional):',
+        contact_file_hint: 'Formats: PNG, JPG, PDF, XLSX, CSV, TXT. Max 5 MB.',
+        contact_file_type: 'File type not allowed.',
+        contact_file_size: 'File exceeds the maximum size (5 MB).'
       }
     };
 
@@ -312,6 +399,82 @@
 
     const pref = (navigator.language||'en').toLowerCase().startsWith('es') ? 'es' : 'en';
     setLang(pref);
+
+    // ===== Contact form logic =====
+    const tr = () => {
+      const lang = document.documentElement.lang || 'en';
+      const d = dict[lang] || dict.en;
+      return {
+        sending: d.contact_sending || 'Sending…',
+        success: d.contact_success || 'Thanks! Your message has been sent.',
+        error: d.contact_error || 'Something went wrong. Please try again later.',
+        file_type: d.contact_file_type || 'File type not allowed.',
+        file_size: d.contact_file_size || 'File exceeds the maximum size (5 MB).'
+      };
+    };
+
+    const form = document.getElementById('contact-form');
+    const statusEl = document.getElementById('form-status');
+    const topicEl = document.getElementById('topic');
+    const subjectEl = document.getElementById('subject');
+    const fileEl = document.getElementById('file');
+
+    function updateSubject() {
+      const topic = topicEl?.value || '';
+      subjectEl.value = topic ? `[${topic}] Consulta desde PREDWEEM` : 'Consulta desde PREDWEEM';
+    }
+    topicEl?.addEventListener('change', updateSubject);
+
+    function validateFile() {
+      if (!fileEl || !fileEl.files || fileEl.files.length === 0) return true;
+      const file = fileEl.files[0];
+      const maxBytes = 5 * 1024 * 1024; // 5 MB
+      const allowed = [
+        'image/png','image/jpeg','application/pdf',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/csv','text/plain','application/csv'
+      ];
+      if (file.size > maxBytes) {
+        statusEl.textContent = tr().file_size; return false;
+      }
+      if (!allowed.includes(file.type)) {
+        statusEl.textContent = tr().file_type; return false;
+      }
+      statusEl.textContent = ''; return true;
+    }
+    fileEl?.addEventListener('change', validateFile);
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!validateFile()) return;
+
+        updateSubject();
+        statusEl.textContent = tr().sending;
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true;
+
+        try {
+          const data = new FormData(form);
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            form.reset();
+            statusEl.textContent = tr().success;
+          } else {
+            statusEl.textContent = tr().error;
+          }
+        } catch {
+          statusEl.textContent = tr().error;
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    }
   </script>
 </body>
 </html>
+
